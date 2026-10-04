@@ -1,3 +1,9 @@
+# v2.1.0
+- Upstream decoupled: Frida gadget is now self-hosted under `gadget/` (no download from taisuii/rusda).
+- Frida kernel bumped to 17.22.1 with rusda anti-detection patch baked in (all ABIs: arm/arm64/x86/x86_64).
+- Toolchain modernized: AGP 7.4.2 -> 8.6.1, Gradle wrapper 7.5 -> 8.9, targetSdk 32 -> 34.
+- Zygisk native lib now rebuilt by CI from source (removed de.undercouch.download plugin).
+
 # v2.0.2
 - Unified system and JNI logging tag to KsuRusda
 - Cleaned up all obsolete workflows and project metadata

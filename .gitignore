@@ -8,7 +8,5 @@
 .externalNativeBuild
 .cxx
 local.properties
-/gadget/*
-!.gitkeep
 /.claude
 out

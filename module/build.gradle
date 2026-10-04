@@ -5,10 +5,6 @@ import java.nio.file.Paths
 import java.nio.file.Files
 import java.security.MessageDigest
 
-plugins {
-    id "de.undercouch.download" version "5.4.0"
-}
-
 apply plugin: 'com.android.library'
 apply from: file(rootProject.file('module.gradle'))
 
@@ -16,27 +12,19 @@ dependencies {
     implementation("io.github.vvb2060.ndk:dobby:1.2")
 }
 
-task downloadFrida(type: Download) {
-    def downloadArchs = ["arm", "arm64"]
-    def magiskArchs = ["arm", "arm64"]
-
-    def sources = downloadArchs.collect{
-        arch -> "https://github.com/taisuii/rusda/releases/download/${rusdaVersion}/rusda-gadget-${rusdaVersion}-android-${arch}.so.xz".toString()
-    }
-
-    def outputs = magiskArchs.collect{
-        arch ->  "libgadget-${arch}.so.xz".toString()
-    }
-
-    def downloads = [sources, outputs].transpose().collectEntries()
-
-    src downloads.keySet()
-    dest "$rootDir/gadget"
-    overwrite true
-    onlyIfModified true
-    quiet true
-    eachFile { f ->
-        f.name = downloads[f.sourceURL.toString()]
+// Self-hosted gadget pipeline: no upstream download.
+// Pre-patched (rusda anti-detection) frida-gadget binaries for all supported
+// ABIs are committed under $rootDir/gadget and consumed directly.
+task downloadFrida {
+    def archs = ["arm", "arm64", "x86", "x86_64"]
+    def gadgetDir = file("$rootDir/gadget")
+    doLast {
+        def missing = archs.findAll { !new File(gadgetDir, "libgadget-${it}.so.xz").exists() }
+        if (!missing.isEmpty()) {
+            throw new GradleException("Missing self-hosted gadget for: ${missing}. " +
+                    "expected under ${gadgetDir} (frida ${fridaVersion}, rusda-patched).")
+        }
+        logger.lifecycle("Self-hosted gadget present: ${archs.collect { "libgadget-${it}.so.xz" }}")
     }
 }
 

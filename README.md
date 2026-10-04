@@ -5,7 +5,7 @@
 [![Zygisk](https://img.shields.io/badge/Hook-Zygisk-brightgreen.svg)](https://github.com)
 
 > **项目声明 (Derivative Work Statement)**:  
-> 本项目是基于 **[gorkemgun/ksu-frida](https://github.com/gorkemgun/ksu-frida)** 与 **[lico-n/ZygiskFrida](https://github.com/lico-n/ZygiskFrida)** 进行深度二次开发、功能扩展与维护的增强版本。  
+> 本项目最初基于 **[gorkemgun/ksu-frida](https://github.com/gorkemgun/ksu-frida)** 与 **[lico-n/ZygiskFrida](https://github.com/lico-n/ZygiskFrida)** 演进。自 v2.1.0 起**已ko上游依赖、独立维护**：去特征 Frida 内核（**17.22.1**，全 ABI）以自托管形式内置于 `gadget/`，构建时不再从外部仓库下载。  
 > 感谢原作者与开源社区前驱者的卓越贡献！向原项目及所有贡献者致敬。
 
 ---
