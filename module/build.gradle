@@ -125,21 +125,24 @@ afterEvaluate {
             from(templatePath + "/webroot") {
                 into 'webroot'
             }
-            from("$buildDir/intermediates/stripped_native_libs/$variantCapped/out/lib") {
-                into 'lib'
+            // AGP 8+: stripped native libs live under
+            //   intermediates/stripped_native_libs/<variant-path>/out/lib/<abi>/libzygiskfrida.so
+            // Variant dir naming varies across AGP versions; glob for the .so instead of
+            // assuming the legacy $variantCapped layout. Each ABI's lib -> magiskDir/lib/<abi>.so.
+            fileTree("$buildDir/intermediates/stripped_native_libs").visit { f ->
+                if (f.directory) return
+                if (f.name != "libzygiskfrida.so") return
+                def abi = f.file.parentFile.name  // e.g. arm64-v8a
+                new File("$magiskDir/lib").mkdirs()
+                Files.copy(f.file.toPath(),
+                           Paths.get("$magiskDir/lib/", abi + ".so"),
+                           java.nio.file.StandardCopyOption.REPLACE_EXISTING)
             }
             from("$rootDir/gadget") {
                 exclude '.gitkeep'
                 into 'gadget'
             }
             doLast {
-                fileTree("$magiskDir/lib").visit { f ->
-                    if (!f.directory) return
-                    def srcPath = Paths.get("${f.file.absolutePath}/libzygiskfrida.so")
-                    def dstPath = Paths.get("$magiskDir/lib/${f.path}.so")
-                    Files.move(srcPath, dstPath)
-                    new File("$magiskDir/lib/${f.path}").deleteDir()
-                }
 
                 fileTree("$magiskDir").visit { f ->
                     if (f.directory) return
