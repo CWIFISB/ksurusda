@@ -1,6 +1,6 @@
 {
-    "version": "v2.1.0",
-    "versionCode": 210,
-    "zipUrl": "https://github.com/CWIFISB/ksurusda/releases/download/v2.1.0/KsuRusda-v2.1.0.zip",
+    "version": "v2.1.1",
+    "versionCode": 211,
+    "zipUrl": "https://github.com/CWIFISB/ksurusda/releases/download/v2.1.1/KsuRusda-v2.1.1.zip",
     "changelog": "https://raw.githubusercontent.com/CWIFISB/ksurusda/main/changelog.md"
 }

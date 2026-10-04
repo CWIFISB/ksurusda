@@ -1,3 +1,7 @@
+# v2.1.1
+- All artifacts are CI-built: gadget downloaded from official frida release and patched in CI (no pre-committed binaries).
+- gadget/ removed from git; rusda patch script moved to tools/.
+
 # v2.1.0
 - Upstream decoupled: Frida gadget is now self-hosted under `gadget/` (no download from taisuii/rusda).
 - Frida kernel bumped to 17.22.1 with rusda anti-detection patch baked in (all ABIs: arm/arm64/x86/x86_64).

@@ -4,8 +4,8 @@ ext {
     moduleName = "ksurusda"
     moduleAuthor = "CWIFISB"
     moduleDescription = "Rusda (Anti-detection Frida) gadget injection module for KernelSU/Magisk via Zygisk"
-    moduleVersion = "v2.1.0"
-    moduleVersionCode = 210
+    moduleVersion = "v2.1.1"
+    moduleVersionCode = 211
 
     // Self-hosted Frida kernel (upstream decoupled; rusda patch baked in)
     fridaVersion = "17.22.1"

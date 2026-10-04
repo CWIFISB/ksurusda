@@ -28,6 +28,23 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download official frida gadget + apply rusda patch
+        run: |
+          set -euo pipefail
+          FRIDA_VERSION=$(grep 'fridaVersion =' module.gradle | awk -F'"' '{print $2}')
+          mkdir -p gadget
+          for arch in arm arm64 x86 x86_64; do
+            echo "=== frida $FRIDA_VERSION / $arch ==="
+            curl -fsSL -o "g.so.xz" "https://github.com/frida/frida/releases/download/${FRIDA_VERSION}/frida-gadget-${FRIDA_VERSION}-android-${arch}.so.xz"
+            xz -d -f g.so.xz
+            python3 tools/rusda_patch.py g.so "gadget/libgadget-${arch}.so"
+            rm -f g.so
+            xz -e -f "gadget/libgadget-${arch}.so"
+          done
+          ls -la gadget/
 
       - name: Accept Android SDK licenses
         run: |
