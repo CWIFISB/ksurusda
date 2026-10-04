@@ -54,6 +54,14 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew :module:assembleRelease
+      - name: Diagnose native lib output
+        run: |
+          echo "=== find libzygiskfrida.so under build ==="
+          find module/build -name 'libzygiskfrida.so' 2>/dev/null || true
+          echo "=== stripped_native_libs tree ==="
+          find module/build/intermediates/stripped_native_libs -type f 2>/dev/null | head -30 || true
+          echo "=== intermediates merged_native_libs ==="
+          find module/build/intermediates -name '*.so' 2>/dev/null | head -30 || true
 
       - name: Get Module Info
         id: module-version
