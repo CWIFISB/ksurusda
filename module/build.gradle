@@ -19,18 +19,6 @@ task downloadFrida {
     def archs = ["arm", "arm64", "x86", "x86_64"]
     def gadgetDir = file("$rootDir/gadget")
     doLast {
-                // AGP 8+: stripped native libs live under
-                //   intermediates/stripped_native_libs/<variant-path>/out/lib/<abi>/libzygiskfrida.so
-                // Must run in execution phase (after assemble), not configuration phase.
-                fileTree("$buildDir/intermediates/stripped_native_libs").visit { f ->
-                    if (f.directory) return
-                    if (f.name != "libzygiskfrida.so") return
-                    def abi = f.file.parentFile.name  // e.g. arm64-v8a
-                    new File("$magiskDir/lib").mkdirs()
-                    Files.copy(f.file.toPath(),
-                               Paths.get("$magiskDir/lib/", abi + ".so"),
-                               java.nio.file.StandardCopyOption.REPLACE_EXISTING)
-                }
         def missing = archs.findAll { !new File(gadgetDir, "libgadget-${it}.so.xz").exists() }
         if (!missing.isEmpty()) {
             throw new GradleException("Missing self-hosted gadget for: ${missing}. " +
