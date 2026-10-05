@@ -4,10 +4,6 @@
 [![Platform](https://img.shields.io/badge/Platform-Android%20(ARM64%20%2F%20ARM32)-blue.svg)](https://github.com)
 [![Zygisk](https://img.shields.io/badge/Hook-Zygisk-brightgreen.svg)](https://github.com)
 
-> **维护声明 (Maintenance Statement)**:  
-> 上游项目 **[zensu357/ksurusda](https://github.com/zensu357/ksurusda)** 已停止更新。本仓库自 **v2.1.0** 起由 **[CWIFISB](https://github.com/CWIFISB)** 独立继承并继续维护：去特征 Frida 内核（**17.22.1**，全 ABI）以自托管形式内置于 `gadget/`，构建在 GitHub Actions 全自动完成，不再依赖任何外部仓库或上游二进制。  
-> 感谢上游原创作者与开源社区前驱者的卓越贡献！
-
 ---
 
 ## 核心特性 (Key Features)
