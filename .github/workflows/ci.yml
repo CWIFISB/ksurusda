@@ -1,6 +1,15 @@
 name: CI-Build
 on:
   workflow_dispatch:
+    inputs:
+      version_tag:
+        description: 'Release tag to publish (e.g. v2.1.1). Leave empty to skip release.'
+        required: false
+        default: ''
+      publish_release:
+        description: 'Create GitHub release from this build'
+        type: boolean
+        default: false
   push:
     branches:
       - main
@@ -77,21 +86,22 @@ jobs:
           path: out/magisk_module_zygisk_release
 
       - name: Create Release ZIP
-        if: startsWith(github.ref, 'refs/tags/')
+        if: (startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && github.event.inputs.publish_release == 'true'))
         run: |
           cd out/magisk_module_zygisk_release
           zip -r ../KsuRusda-${{ steps.module-version.outputs.version }}.zip .
 
       - name: Publish Release
-        if: startsWith(github.ref, 'refs/tags/')
+        if: (startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && github.event.inputs.publish_release == 'true'))
         uses: softprops/action-gh-release@v2
         with:
           name: KsuRusda ${{ steps.module-version.outputs.version }}
+          tag_name: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version_tag || github.ref }}
           generate_release_notes: true
           files: out/KsuRusda-${{ steps.module-version.outputs.version }}.zip
 
       - name: Update update.json
-        if: startsWith(github.ref, 'refs/tags/')
+        if: (startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && github.event.inputs.publish_release == 'true'))
         run: |
           set -euo pipefail
 
